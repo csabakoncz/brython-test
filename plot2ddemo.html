@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/brython@3.9.4/brython.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/brython@3.9.4/brython_stdlib.js">
+  </script>
+    <!--
+    <script src="venv/lib/python3.9/site-packages/brython/data/brython.js"></script>
+    <script src="venv/lib/python3.9/site-packages/brython/data/brython_stdlib.js"></script>
+  -->
+
+  <style>
+    .codearea {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Oxygen Mono', Consolas, 'Liberation Mono', 'DejaVu Sans Mono', monospace;
+      font-size: 14px;
+      overflow: auto
+    }
+  </style>
+
+</head>
+
+<body onload="brython()">
+
+<textarea id="code" class="codearea" rows="20" cols="80"></textarea>
+
+<textarea id="console" class="codearea" rows="20" cols="80"></textarea>
+
+<div id=content></div>
+
+<script type="text/python3">
+from interpreter import Interpreter
+
+# open REPL in textarea with id "code"
+Interpreter("code")
+</script>
+
+<script type="text/python3">
+from plot2d import plot
+plot.Plot.DEMO('plotarea')
+</script>
+
+<canvas id="plotarea" width="840" height="440"></canvas>
+
+
+</body>
+
+</html>
