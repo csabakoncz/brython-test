@@ -2,7 +2,7 @@ import math
 import typing
 
 
-class Vector():
+class Vector:
     x: float
     y: float
 
@@ -11,7 +11,7 @@ class Vector():
         self.y = y
 
     def length(self) -> float:
-        return math.sqrt(self.x**2 + self.y**2)
+        return math.sqrt(self.x ** 2 + self.y ** 2)
 
     def __add__(self, other: 'Vector') -> 'Vector':
         return Vector(self.x + other.x, self.y + other.y)
@@ -48,20 +48,32 @@ class Vector():
     def normal_to(self) -> 'Vector':
         return Vector(self.y, -self.x)
 
+    def __repr__(self):
+        return 'Vector(%s, %s)' % (self.x, self.y)
 
-class Line():
-    def __init__(self, start: Vector, dir: Vector):
+
+class Line:
+    def __init__(self, start: Vector, direction: Vector):
+        """
+        Create a line through the given point and having the direction
+        of the second argument.
+        :param start:
+        :param direction: vector showing the direction (will be normalized)
+        """
         self.start = start
-        self.dir = dir.normalized()
+        self.direction = direction.normalized()
 
     def intersection_with(self, other: 'Line'):
         v10 = other.start
-        v1d = other.dir
+        v1d = other.direction
         v20 = self.start
-        v2d = self.dir
+        v2d = self.direction
 
         v1dn = v1d.normal_to()
 
         u = ((v10 - v20) * v1dn) / (v2d * v1dn)
 
-        return self.start + u * self.dir
+        return self.start + u * self.direction
+
+    def __repr__(self):
+        return 'Line( start=%s , direction=%s )' % (self.start, self.direction)
