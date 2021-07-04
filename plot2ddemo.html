@@ -25,6 +25,23 @@
 
 <body onload="brython()">
 
+<p>
+  Try this in the interpreter window:
+</p>
+<pre>
+from browser import document
+from plot2d import vector as V
+from plot2d import plot
+
+v1 = V.Vector(100,100)
+v2 = V.Vector(200,200)
+
+canvas = document.getElementById('plotarea')
+p = plot.Plot(canvas)
+p.line(v1, v2)
+</pre>
+
+
 <textarea id="code" class="codearea" rows="20" cols="80"></textarea>
 
 <textarea id="console" class="codearea" rows="20" cols="80"></textarea>
