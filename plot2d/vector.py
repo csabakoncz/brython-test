@@ -11,7 +11,7 @@ class Vector:
         self.y = y
 
     def length(self) -> float:
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return math.sqrt(self.x**2 + self.y**2)
 
     def __add__(self, other: 'Vector') -> 'Vector':
         return Vector(self.x + other.x, self.y + other.y)
@@ -63,7 +63,7 @@ class Line:
         self.start = start
         self.direction = direction.normalized()
 
-    def intersection_with(self, other: 'Line'):
+    def intersection_with(self, other: 'Line') -> Vector:
         v10 = other.start
         v1d = other.direction
         v20 = self.start
