@@ -6,6 +6,9 @@
         "module_stubs"
     ],
     "python.linting.enabled": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingModuleSource": "none"
+    },
     "python.analysis.extraPaths": [
         "module_stubs"
     ],

@@ -27,3 +27,9 @@ class Context2D():
 
     def clearRect(self, x1: float, y1: float, width: float, height: float):
         pass
+
+    def save(self):
+        pass
+
+    def restore(self):
+        pass
