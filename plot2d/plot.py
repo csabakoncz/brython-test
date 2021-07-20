@@ -8,23 +8,47 @@ from browser import document
 
 from .vector import Vector, Line
 
+number = typing.Union[int, float]
 
 class PlotContext:
-    def __init__(self, ctx: Context2D, w: typing.Union[int, float],
-                 h: typing.Union[int, float]):
+    def __init__(self, ctx: Context2D):
         self.ctx = ctx
-        self.w = w
-        self.h = h
 
     def __enter__(self) -> Context2D:
         self.ctx.save()
-        self.ctx.translate(self.w / 2, self.h / 2)
-        self.ctx.scale(1, -1)
+        self._configure_context()
 
         return self.ctx
 
+    def _configure_context(self):
+        raise Exception('Not implemented')
+
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.ctx.restore()
+
+
+class TranslatedContext(PlotContext):
+    def __init__(self, ctx: Context2D, w: number,
+                 h: number):
+        super().__init__(ctx)
+        self.w = w
+        self.h = h
+
+    def _configure_context(self):
+        self.ctx.translate(self.w / 2, self.h / 2)
+        self.ctx.scale(1, -1)
+
+
+class StyledContext(PlotContext):
+    def __init__(self, ctx: Context2D, lineWidth: number,
+                 strokeStyle: str):
+        super().__init__(ctx)
+        self.lineWidth = lineWidth
+        self.strokeStyle = strokeStyle
+
+    def _configure_context(self):
+        self.ctx.lineWidth = self.lineWidth
+        self.ctx.strokeStyle = self.strokeStyle
 
 
 class Plot():
@@ -47,7 +71,8 @@ class Plot():
         self.ctx.strokeStyle = "black"
 
     def plot_context(self) -> PlotContext:
-        return PlotContext(self.ctx, self.canvas.width, self.canvas.height)
+        return TranslatedContext(self.ctx, self.canvas.width,
+                                 self.canvas.height)
 
     def clear(self):
         self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height)
@@ -74,6 +99,15 @@ class Plot():
             ctx.lineTo(v1.x, v1.y)
             ctx.stroke()
 
+    def style(self, lineWidth: number, strokeStyle: str) -> StyledContext:
+        return StyledContext(self.ctx,
+                             lineWidth=lineWidth,
+                             strokeStyle=strokeStyle)
+
+    def semiline(self, line: Line, length: number):
+        with self.style(lineWidth=1, strokeStyle="gray") as ctx:
+            self.line(line.start, line.start + line.direction * length)
+
     def demo(self):
         V1 = Vector(-100, 200)
         V2 = Vector(-300, -200)
@@ -82,9 +116,11 @@ class Plot():
 
         # bisector in V1:
         B1 = Line(V1, (V2 - V1).normalized() + (V3 - V1).normalized())
+        self.semiline(B1, 500)
 
         # bisector in V2:
         B2 = Line(V2, (V1 - V2).normalized() + (V3 - V2).normalized())
+        self.semiline(B2, 500)
 
         C = B1.intersection_with(B2)
 
